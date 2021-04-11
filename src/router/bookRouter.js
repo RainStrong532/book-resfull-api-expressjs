@@ -5,8 +5,8 @@ const router = express.Router();
 
 const bookController = require('../controller/bookController'); // import controller
 
-router.get('/query', bookController.getBookByIdQuery);
 router.get('/', bookController.getListBook); // Định nghĩa phương thức get sẽ lấy dữ liệu sách ra tại "/"
+router.get('/search', bookController.searchBooks);
 router.get('/:id', bookController.getBookById); // thêm param id
 router.post('/', bookController.createBook);
 router.put('/:id', bookController.updateBook);

@@ -97,7 +97,7 @@ const updateBook = (data) => {
 const deleteBook = (id) => {
     let pool = new sql.ConnectionPool(config.sql);
     return new Promise((resolve, reject) => {
-        const query = "USE book_store;\DELETE dbo.book WHERE book_id = @book_id;";
+        const query = "USE book_store;\nDELETE dbo.book WHERE book_id = @book_id;";
         pool.connect().then(() => {
             const request = new sql.Request(pool);
             request
@@ -115,10 +115,33 @@ const deleteBook = (id) => {
     })
 }
 
+const searchBooks = (textSearch) => {
+    const pattern = "%"+textSearch+"%";
+    let pool = new sql.ConnectionPool(config.sql);
+    return new Promise((resolve, reject) => {
+        const query = "USE book_store;\nSELECT * FROM dbo.book WHERE name LIKE @pattern OR author LIKE @pattern OR price LIKE @pattern OR description LIKE @pattern;";
+        pool.connect().then(() => {
+            const request = new sql.Request(pool);
+            request
+            .input('pattern', sql.NVarChar, pattern)
+            .query(query).then((recordset) => {
+                pool.close();
+                resolve(recordset.recordset)
+            }).catch(err => {
+                pool.close();
+                reject(err);
+            })
+        }).catch(err => {
+            reject(err);
+        })
+    })
+}
+
 module.exports = {
     getListBook,
     getBookById,
     updateBook,
     createBook,
-    deleteBook
+    deleteBook,
+    searchBooks
 }

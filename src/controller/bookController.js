@@ -17,18 +17,8 @@ const getBookById = async (req, res, next) => {
         if(id){ //Kiểm trả id
         const books  = await bookData.getBookById(id);
         res.send(books[0]); // trả về một phần tử vì id là duy nhất
-        }
-    }catch(err){
-        res.status(400).send(err.message);
-    }
-}
-
-const getBookByIdQuery = async (req, res, next) => {
-    try{
-        const id = req.query.book_id; // get id by query
-        if(id){
-        const books  = await bookData.getBookById(id);
-        res.send(books[0]);
+        }else{
+            res.send({message: 'Id is not valid'});
         }
     }catch(err){
         res.status(400).send(err.message);
@@ -63,6 +53,22 @@ const deleteBook = async (req, res, next) => {
         if(id){
         const message  = await bookData.deleteBook(id);
         res.send(message);
+        }else{
+            res.send({message: 'Id is not valid'});
+        }
+    }catch(err){
+        res.status(400).send(err.message);
+    }
+}
+
+const searchBooks = async (req, res, next) => {
+    try{
+        const text_search = req.query.text_search; // get text search by query
+        if(text_search.length > 0){
+        const books  = await bookData.searchBooks(text_search);
+        res.send(books);
+        }else{
+            res.send({message: 'There is no text search to searching'});
         }
     }catch(err){
         res.status(400).send(err.message);
@@ -76,5 +82,5 @@ module.exports = {
     updateBook,
     createBook,
     deleteBook,
-    getBookByIdQuery
+    searchBooks
 }
