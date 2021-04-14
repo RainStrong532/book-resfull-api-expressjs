@@ -1,33 +1,27 @@
 'use strict';
-
-const dotenv = require('dotenv');
-
-const assert = require('assert');
-
-dotenv.config();
-
-const { PORT, HOST, HOST_URL, SQL_USER, SQL_PASSWORD, SQL_DATABASE, SQL_SERVER } = process.env;
-
-const sqlEncrypt = process.env.ENCRYPT = true;
-
-assert(PORT, "PORT is required");
-assert(HOST, "HOST is required");
+const config = require('./contants');
 
 module.exports = {
-    port: PORT,
-    host: HOST,
-    url: HOST_URL,
-    sql: {
-        server: SQL_SERVER,
-        database: SQL_DATABASE,
-        user: SQL_USER,
-        password: SQL_PASSWORD,
+    port: config.PORT,
+    host: config.HOST,
+    url: config.HOST_URL,
+    sqlServer: {
+        server: config.SQL_SERVER,
+        database: config.SQL_DATABASE,
+        user: config.SQL_USER,
+        password: config.SQL_PASSWORD,
         requestTimeout: 15000,
         option: {
             keepAlive: true,
-            encrypt: sqlEncrypt,
+            encrypt: true,
             enableArithAbort: true,
             trustedConnection: true,
         }
+    },
+    mysql:{
+        user: config.MYSQL_USER,
+        password: config.MYSQL_PASSWORD,
+        database: config.MYSQL_DATABASE,
+        host: config.MYSQL_HOST
     }
 }

@@ -5,7 +5,7 @@ const sql = require('mssql');
 //ms sql server
 
 const getListBook = () => {
-    let pool = new sql.ConnectionPool(config.sql); // kết nối với csdl với các config đã làm ở file config
+    let pool = new sql.ConnectionPool(config.sqlServer); // kết nối với csdl với các config đã làm ở file config
     return new Promise((resolve, reject) => {
         const query = "USE book_store;\nSELECT * FROM dbo.book;" // Lệnh query lấy danh sách book trong csdl
         pool.connect().then(() => { // Tạo kết nối
@@ -24,7 +24,7 @@ const getListBook = () => {
 }
 
 const getBookById = (id) => {
-    let pool = new sql.ConnectionPool(config.sql);
+    let pool = new sql.ConnectionPool(config.sqlServer);
     return new Promise((resolve, reject) => {
         const query = "USE book_store;\nSELECT * FROM dbo.book WHERE book_id = @book_id;";
         pool.connect().then(() => {
@@ -45,7 +45,7 @@ const getBookById = (id) => {
 }
 
 const createBook = (data) => {
-    let pool = new sql.ConnectionPool(config.sql);
+    let pool = new sql.ConnectionPool(config.sqlServer);
     return new Promise((resolve, reject) => {
         const query = "USE book_store;\nINSERT INTO dbo.book(name, author, price, description) VALUES (@name, @author, @price, @description);\nSELECT * FROM dbo.book WHERE book_id = SCOPE_IDENTITY()";
         pool.connect().then(() => {
@@ -70,7 +70,7 @@ const createBook = (data) => {
 
 
 const updateBook = (data) => {
-    let pool = new sql.ConnectionPool(config.sql);
+    let pool = new sql.ConnectionPool(config.sqlServer);
     return new Promise((resolve, reject) => {
         const query = "USE book_store;\nUPDATE dbo.book SET name = @name, author = @author, price = @price, description = @description WHERE book_id = @book_id\nSELECT * FROM dbo.book WHERE book_id = @book_id";
         pool.connect().then(() => {
@@ -95,7 +95,7 @@ const updateBook = (data) => {
 }
 
 const deleteBook = (id) => {
-    let pool = new sql.ConnectionPool(config.sql);
+    let pool = new sql.ConnectionPool(config.sqlServer);
     return new Promise((resolve, reject) => {
         const query = "USE book_store;\nDELETE dbo.book WHERE book_id = @book_id;";
         pool.connect().then(() => {
@@ -117,7 +117,7 @@ const deleteBook = (id) => {
 
 const searchBooks = (textSearch) => {
     const pattern = "%"+textSearch+"%";
-    let pool = new sql.ConnectionPool(config.sql);
+    let pool = new sql.ConnectionPool(config.sqlServer);
     return new Promise((resolve, reject) => {
         const query = "USE book_store;\nSELECT * FROM dbo.book WHERE name LIKE @pattern OR author LIKE @pattern OR price LIKE @pattern OR description LIKE @pattern;";
         pool.connect().then(() => {
