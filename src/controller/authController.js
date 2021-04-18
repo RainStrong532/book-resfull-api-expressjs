@@ -28,25 +28,25 @@ const sigup = async (req, res, next) => {
         }
         data.password = utils.hashCode(data.password);
         const newAccount = await accountData.createAccount(data);
+        let addRole = true;
         if (newAccount.user_id) {
             req.body.roles.forEach(async (role_name) => {
-                try {
-                    const role = await roleData.getByRoleName(role_name);
-                    const result = await user_role.addRole(role.role_id, newAccount.user_id);
-                    if (result.length == 0) {
-                        res.status(400).json({ message: "Add " + role_name + " role failure!" });
-                        return;
-                    }
-                } catch (err) {
-                    res.status(400).send(err);
+                const role = await roleData.getByRoleName(role_name);
+                const result = await user_role.addRole(role[0].role_id, newAccount.user_id);
+                if (result.length == 0) {
+                    addRole = false;
+                    return;
                 }
-
             });
-            res.status(200).json({message: 'signup successfully'});
-        }else{
-            res.status(400).json({message: "signup failure"});
+            if (!addRole) {
+                res.status(400).json({ message: "Add roles failure!" });
+                return;
+            }
+            res.status(200).json({ message: 'signup successfully' });
+        } else {
+            res.status(400).json({ message: "signup failure" });
         }
-        
+
     } catch (err) {
         res.status(400).send(err.message); // trả về lỗi thì lấy dữ liệu thất bại
     }
