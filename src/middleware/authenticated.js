@@ -6,16 +6,10 @@ const authenticateToken = function (req, res, next) {
     
     const token = authHeader && authHeader.split(' ')[1];
 
-    console.log('====================================');
-    console.log(authHeader, "authHeader", token);
-    console.log('====================================');
-
-    if (token == null) return res.sendStatus(401);
+    if (token == null) return res.status(401).json({message: "Token not found"})
 
     jwt.verify(token, config.token_secret, (err, user) => {
-        console.log(err)
-
-        if (err) return res.sendStatus(403)
+        if (err) return res.status(403).json(err)
 
         req.user = user
 

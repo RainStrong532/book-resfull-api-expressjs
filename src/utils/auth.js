@@ -1,9 +1,9 @@
 const confgi = require('../../config');
 const jwt = require('jsonwebtoken');
 
-const  generateAccessToken = function(username) {
-    const expriedADay = 60*60*24;
-    return jwt.sign({username: username}, confgi.token_secret, { expiresIn:  expriedADay});
+const  generateAccessToken = function(user) {
+    const exprieAfter = 60;
+    return jwt.sign(user, confgi.token_secret, { expiresIn:  exprieAfter});
 }
 const bcrypt = require('bcrypt');
 

@@ -18,19 +18,11 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/api/books', auth.authenticateToken, bookRouter.routes); // http://localhost:8031/api/books url để tạo request
+app.use('/api/books', auth.authenticateToken, bookRouter.routes); // kiểm tra jsonwebtoken
+app.use('/api/public/books', bookRouter.routes); // http://localhost:8031/api/books url để tạo request
 app.use('/api/mysql/books', bookRouterMysql.routes);
 
 app.use('/api/auth', authRouter.routes);
-
-app.post('/api/createNewUser', (req, res) => {
-    // ...
-
-    const token = utils.generateAccessToken({ username: req.body.username });
-    res.json(token);
-
-    // ...
-});
 
 app.listen(config.port, () => {
     console.log('Server is running on http://localhost:' + config.port);
