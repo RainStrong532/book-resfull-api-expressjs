@@ -11,7 +11,7 @@ module.exports = {
         user: config.SQL_USER,
         password: config.SQL_PASSWORD,
         requestTimeout: 15000,
-        option: {
+        options: {
             keepAlive: true,
             encrypt: true,
             enableArithAbort: true,
@@ -23,5 +23,6 @@ module.exports = {
         password: config.MYSQL_PASSWORD,
         database: config.MYSQL_DATABASE,
         host: config.MYSQL_HOST
-    }
+    },
+    token_secret: config.TOKEN_SECRET
 }

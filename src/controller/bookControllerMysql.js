@@ -1,6 +1,6 @@
 'use strict';
 
-const bookData = require('../data/book/mysql');
+const bookData = require('../data/mysql');
 
 const getListBook = async function (req, res, next){
     try{
