@@ -1,6 +1,8 @@
 'use strict';
 // import module kết nối với cơ sở dữ liệu
 const accountData = require('../data/account');
+const roleData = require('../data/role');
+const user_role = require('../data/user_role');
 const utils = require('../utils/auth');
 
 const getListAccount = async (req, res, next) => {
@@ -24,15 +26,27 @@ const sigup = async (req, res, next) => {
             res.status(400).json({ message: 'Mật khẩu phải lơn hơn 8 ký tự' });
             return;
         }
-        const existed = await accountData.existedUser(data.username);
-        if (existed) {
-            res.status(400).json({ message: 'Tài khoản đã tồn tại' });
-            return;
+        data.password = utils.hashCode(data.password);
+        const newAccount = await accountData.createAccount(data);
+        if (newAccount.user_id) {
+            req.body.roles.forEach(async (role_name) => {
+                try {
+                    const role = await roleData.getByRoleName(role_name);
+                    const result = await user_role.addRole(role.role_id, newAccount.user_id);
+                    if (result.length == 0) {
+                        res.status(400).json({ message: "Add " + role_name + " role failure!" });
+                        return;
+                    }
+                } catch (err) {
+                    res.status(400).send(err);
+                }
+
+            });
+            res.status(200).json({message: 'signup successfully'});
         }else{
-            data.password = utils.hashCode(data.password);
-            const newAccount = await accountData.signup(data);
-            res.send(newAccount);
+            res.status(400).json({message: "signup failure"});
         }
+        
     } catch (err) {
         res.status(400).send(err.message); // trả về lỗi thì lấy dữ liệu thất bại
     }
@@ -50,18 +64,18 @@ const signin = async (req, res, next) => {
             res.status(400).json({ message: 'Mật khẩu phải lơn hơn 8 ký tự' });
             return;
         }
-        const user = await accountData.signin(data);
-        
+        const user = await accountData.getByUsername(data.username);
+
         if (user.length > 0) {
             const passwordPassed = await utils.checkPassword(data.password, user[0].password);
-            if(passwordPassed){
-                res.status(200).send({token: utils.generateAccessToken({username: user[0].username, user_id: user[0].user_id})});
-            }else{
-                res.status(400).json({ message: 'Đăng nhập thất bại'});
+            if (passwordPassed) {
+                res.status(200).send({ token: utils.generateAccessToken({ username: user[0].username, user_id: user[0].user_id }) });
+            } else {
+                res.status(400).json({ message: 'Đăng nhập thất bại' });
                 return;
             }
-        }else{
-            res.status(400).send({ message: 'Đăng nhập thất bại'});
+        } else {
+            res.status(400).send({ message: 'Đăng nhập thất bại' });
         }
     } catch (err) {
         res.status(400).send(err.message);

@@ -1,5 +1,8 @@
 const jwt = require('jsonwebtoken');
-const config = require('../../config')
+const config = require('../../config');
+const User = require('../data/account');
+const User_Role = require('../data/user_role');
+const {ROLES} = require('../../contants')
 
 const authenticateToken = function (req, res, next) {
     const authHeader = req.headers['authorization']
@@ -16,7 +19,55 @@ const authenticateToken = function (req, res, next) {
         next()
     })
 }
+const isAdmin = (req, res, next) => {
+    User_Role.getRoleByUsername(req.user.user_id).then(roles => {
+        for (let i = 0; i < roles.length; i++) {
+          if (roles[i].role_name === ROLES.admin) {
+            next();
+            return;
+          }
+        }
+  
+        res.status(403).json({
+            message: `Require ${ROLES.admin} Role!`
+        });
+        return;
+    });
+  };
 
+  const isManager = (req, res, next) => {
+    User_Role.getRoleByUsername(req.user.user_id).then(roles => {
+        for (let i = 0; i < roles.length; i++) {
+          if (roles[i].role_name === ROLES.manager) {
+            next();
+            return;
+          }
+        }
+  
+        res.status(403).json({
+            message: `Require ${ROLES.manager} Role!`
+        });
+        return;
+    });
+  };
+  const isMonitor = (req, res, next) => {
+    User_Role.getRoleByUsername(req.user.user_id).then(roles => {
+        for (let i = 0; i < roles.length; i++) {
+          if (roles[i].role_name === ROLES.monitor) {
+            next();
+            return;
+          }
+        }
+  
+        res.status(403).json({
+          message: `Require ${ROLES.monitor} Role!`
+        });
+        return;
+    });
+  };
 module.exports = {
-    authenticateToken
+    authenticateToken,
+    isAdmin,
+    isManager, 
+    isMonitor
 }

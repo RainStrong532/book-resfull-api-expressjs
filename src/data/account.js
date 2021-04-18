@@ -25,7 +25,7 @@ const getListAccount = () => {
         })
     })
 }
-const signup = (data) => {
+const createAccount = (data) => {
     let pool = new sql.ConnectionPool(config.sqlServer);
     return new Promise((resolve, reject) => {
         const query = "USE book_store;\INSERT INTO dbo.account(username, password) VALUES (@username, @password)\nSELECT SCOPE_IDENTITY() AS user_id;";
@@ -90,14 +90,14 @@ const searchAccount = (text_search) => {
         })
     })
 }
-const signin = (data)  => {
+const getByUsername = (username)  => {
     let pool = new sql.ConnectionPool(config.sqlServer); // kết nối với csdl với các config đã làm ở file config
     return new Promise((resolve, reject) => {
         const query = "USE book_store;\nSELECT TOP 1 * FROM dbo.account WHERE username = @username;"
         pool.connect().then(() => { // Tạo kết nối
             const request = new sql.Request(pool); // Tạo request
             request
-            .input('username', sql.NVarChar(255), data.username)
+            .input('username', sql.NVarChar(255), username)
             .query(query).then(res => { //Tiến hành query
                 pool.close(); //Đóng kết nối
                 resolve(res.recordset)
@@ -134,7 +134,7 @@ module.exports = {
     getListAccount,
     updateAccount,
     searchAccount,
-    signup,
+    createAccount,
     existedUser,
-    signin
+    getByUsername
 }

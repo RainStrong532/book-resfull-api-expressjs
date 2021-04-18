@@ -2,7 +2,7 @@ const confgi = require('../../config');
 const jwt = require('jsonwebtoken');
 
 const  generateAccessToken = function(user) {
-    const exprieAfter = 60;
+    const exprieAfter = 60*60*24;
     return jwt.sign(user, confgi.token_secret, { expiresIn:  exprieAfter});
 }
 const bcrypt = require('bcrypt');

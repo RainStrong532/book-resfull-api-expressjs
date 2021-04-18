@@ -9,6 +9,7 @@ var app = express();
 const bookRouter = require('./src/router/bookRouter')
 const bookRouterMysql = require('./src/router/bookRouterMysql')
 const authRouter = require('./src/router/authRouter')
+const bookAuth = require('./src/router/book.auth.router')
 
 const utils = require('./src/utils/auth');
 
@@ -18,7 +19,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/api/books', auth.authenticateToken, bookRouter.routes); // kiểm tra jsonwebtoken
+app.use('/api/books' ,auth.authenticateToken, bookAuth.routes); // kiểm tra jsonwebtoken
 app.use('/api/public/books', bookRouter.routes); // http://localhost:8031/api/books url để tạo request
 app.use('/api/mysql/books', bookRouterMysql.routes);
 
