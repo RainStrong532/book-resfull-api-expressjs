@@ -5,7 +5,8 @@ const sql = require('mssql');
 const getByRoleName = (role_name)  => {
     let pool = new sql.ConnectionPool(config.sqlServer); // kết nối với csdl với các config đã làm ở file config
     return new Promise((resolve, reject) => {
-        const query = "USE book_store;\nSELECT TOP 1 * FROM dbo.role WHERE role_name = @role_name;"
+        const query = "USE book_store;\
+        SELECT TOP 1 * FROM dbo.role WHERE role_name = @role_name;"
         pool.connect().then(() => { // Tạo kết nối
             const request = new sql.Request(pool); // Tạo request
             request

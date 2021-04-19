@@ -7,14 +7,12 @@ const sql = require('mssql');
 const getListAccount = () => {
     let pool = new sql.ConnectionPool(config.sqlServer); // kết nối với csdl với các config đã làm ở file config
     return new Promise((resolve, reject) => {
-        const query = "USE book_store;\nSELECT * FROM dbo.account;"
+        const query = "USE book_store;\
+        SELECT * FROM dbo.account;"
         pool.connect().then(() => { // Tạo kết nối
             const request = new sql.Request(pool); // Tạo request
             request.query(query).then(res => { //Tiến hành query
                 pool.close(); //Đóng kết nối
-                console.log('====================================');
-                console.log(res);
-                console.log('====================================');
                 resolve(res.recordset) // trả về dữ liệu lấy được
             }).catch(err => {
                 pool.close(); //Đóng kết nối
@@ -28,7 +26,9 @@ const getListAccount = () => {
 const createAccount = (data) => {
     let pool = new sql.ConnectionPool(config.sqlServer);
     return new Promise((resolve, reject) => {
-        const query = "USE book_store;\INSERT INTO dbo.account(username, password) VALUES (@username, @password)\nSELECT SCOPE_IDENTITY() AS user_id;";
+        const query = "USE book_store;\
+        INSERT INTO dbo.account(username, password) VALUES (@username, @password)\
+        SELECT SCOPE_IDENTITY() AS user_id;";
         pool.connect().then(() => {
             const request = new sql.Request(pool);
             request
@@ -49,7 +49,9 @@ const createAccount = (data) => {
 const updateAccount = (data) => {
     let pool = new sql.ConnectionPool(config.sqlServer);
     return new Promise((resolve, reject) => {
-        const query = "USE book_store;\nUPDATE dbo.account SET username = @username, password = @password WHERE user_id = @user_id\nSELECT * FROM dbo.account WHERE user_id = @user_id";
+        const query = "USE book_store;\
+        UPDATE dbo.account SET username = @username, password = @password WHERE user_id = @user_id\
+        SELECT * FROM dbo.account WHERE user_id = @user_id";
         pool.connect().then(() => {
             const request = new sql.Request(pool);
             request
@@ -72,7 +74,8 @@ const updateAccount = (data) => {
 const searchAccount = (text_search) => {
     let pool = new sql.ConnectionPool(config.sqlServer); // kết nối với csdl với các config đã làm ở file config
     return new Promise((resolve, reject) => {
-        const query = "USE book_store;\nSELECT * FROM dbo.account WHERE username = @text_search;"
+        const query = "USE book_store;\
+        SELECT * FROM dbo.account WHERE username = @text_search;"
         pool.connect().then(() => { // Tạo kết nối
             const request = new sql.Request(pool); // Tạo request
             request
@@ -93,7 +96,8 @@ const searchAccount = (text_search) => {
 const getByUsername = (username)  => {
     let pool = new sql.ConnectionPool(config.sqlServer); // kết nối với csdl với các config đã làm ở file config
     return new Promise((resolve, reject) => {
-        const query = "USE book_store;\nSELECT TOP 1 * FROM dbo.account WHERE username = @username;"
+        const query = "USE book_store;\
+        SELECT TOP 1 * FROM dbo.account WHERE username = @username;"
         pool.connect().then(() => { // Tạo kết nối
             const request = new sql.Request(pool); // Tạo request
             request
@@ -113,7 +117,8 @@ const getByUsername = (username)  => {
 const existedUser = (username)  => {
     let pool = new sql.ConnectionPool(config.sqlServer); // kết nối với csdl với các config đã làm ở file config
     return new Promise((resolve, reject) => {
-        const query = "USE book_store;\nSELECT TOP 1 user_id FROM dbo.account WHERE username = @username;"
+        const query = "USE book_store;\
+        SELECT TOP 1 user_id FROM dbo.account WHERE username = @username;"
         pool.connect().then(() => { // Tạo kết nối
             const request = new sql.Request(pool); // Tạo request
             request

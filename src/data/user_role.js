@@ -6,9 +6,10 @@ const getRoleByUsername = (user_id)  => {
     let pool = new sql.ConnectionPool(config.sqlServer); // kết nối với csdl với các config đã làm ở file config
     return new Promise((resolve, reject) => {
         const query = "SELECT r.role_name, a.username\
-        FROM account as a\nINNER JOIN user_role as ur\
+        FROM account AS a\
+        INNER JOIN user_role AS ur\
         ON a.user_id = ur.user_id\
-        INNER JOIN role as r\
+        INNER JOIN role AS r\
         ON ur.role_id = r.role_id\
         WHERE a.user_id = @user_id;"
         pool.connect().then(() => { // Tạo kết nối
