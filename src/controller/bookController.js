@@ -3,9 +3,9 @@
 const bookData = require('../data/book'); // import module kết nối với cơ sở dữ liệu
 
 const getListBook = async (req, res, next) => {
-    console.log('====================================');
-    console.log(req.user);
-    console.log('====================================');
+    // console.log('====================================');
+    // console.log(req.user);
+    // console.log('====================================');
     try {
         const books = await bookData.getListBook();
         res.send(books); //Thành công trả về list book

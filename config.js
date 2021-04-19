@@ -24,5 +24,6 @@ module.exports = {
         database: config.MYSQL_DATABASE,
         host: config.MYSQL_HOST
     },
-    token_secret: config.TOKEN_SECRET
+    token_secret: config.TOKEN_SECRET,
+    front_end_url: config.FRONTEND_URL
 }

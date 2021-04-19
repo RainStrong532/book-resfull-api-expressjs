@@ -1,0 +1,14 @@
+extends ../common/index
+block content
+  .row.content
+    .col-sm-12
+      h4
+        small Demo
+      hr
+      .container
+        .col-md-8.col-md-offset-2
+          h3 File Input Example
+          form(method='post', action='upload/post', enctype='multipart/form-data')
+            .form-group
+              input.input-group.input-file(type='file', name='image')
+              button.btn.btn-primary.pull-right(type='submit', name='upload') Upload
