@@ -19,6 +19,13 @@ const authenticateToken = function (req, res, next) {
     next()
   })
 }
+
+const isVerify = (req, res, next) => {
+  if(req.user.verify == 0) return res.status(400).json({message: "Tài khoản chưa được xác thực"});
+  next();
+};
+
+
 const isAdmin = (req, res, next) => {
   User_Role.getRoleByUsername(req.user.user_id).then(roles => {
     for (let i = 0; i < roles.length; i++) {
@@ -69,5 +76,6 @@ module.exports = {
   authenticateToken,
   isAdmin,
   isManager,
-  isMonitor
+  isMonitor,
+  isVerify
 }

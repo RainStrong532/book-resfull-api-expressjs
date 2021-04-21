@@ -73,7 +73,7 @@ const signin = async (req, res, next) => {
         if (user.length > 0) {
             const passwordPassed = await utils.checkPassword(data.password, user[0].password);
             if (passwordPassed) {
-                res.status(200).send({ token: utils.generateAccessToken({ username: user[0].username, user_id: user[0].user_id }) });
+                res.status(200).send({ token: utils.generateAccessToken({ username: user[0].username, user_id: user[0].user_id, verify: user[0].status }) });
             } else {
                 res.status(400).json({ message: 'Đăng nhập thất bại' });
                 return;
