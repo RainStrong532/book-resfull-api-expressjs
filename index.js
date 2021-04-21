@@ -11,6 +11,7 @@ const bookRouterMysql = require('./src/router/bookRouterMysql')
 const authRouter = require('./src/router/authRouter')
 const bookAuth = require('./src/router/book.auth.router')
 const uploadRouter = require('./src/router/uploadRouter')
+const verifyRouter = require('./src/router/verifyRouter')
 
 const auth = require('./src/middleware/authenticated');
 
@@ -23,8 +24,8 @@ app.use(cors({origin: config.front_end_url}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/welcome', (req, res) => {
-    res.render('index');
+app.get('/', (req, res) => {
+    res.render('welcome/index');
 })
 
 app.use('/upload', uploadRouter.routes);
@@ -33,6 +34,7 @@ app.use('/api/books' ,auth.authenticateToken, bookAuth.routes); // kiểm tra js
 app.use('/api/public/books', bookRouter.routes); // http://localhost:4000/api/books url để tạo request
 app.use('/api/mysql/books', bookRouterMysql.routes);
 app.use('/api/auth', authRouter.routes);
+app.use('/api/secrets', verifyRouter.routes);
 
 app.listen(config.port, () => {
     console.log('Server is running on http://localhost:' + config.port);

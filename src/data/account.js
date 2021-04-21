@@ -27,13 +27,16 @@ const createAccount = (data) => {
     let pool = new sql.ConnectionPool(config.sqlServer);
     return new Promise((resolve, reject) => {
         const query = "USE book_store;\
-        INSERT INTO dbo.account(username, password) VALUES (@username, @password)\
+        INSERT INTO dbo.account(username, password, email, first_name, last_name) VALUES (@username, @password, @email, @first_name, @last_name)\
         SELECT SCOPE_IDENTITY() AS user_id;";
         pool.connect().then(() => {
             const request = new sql.Request(pool);
             request
                 .input('username', sql.NVarChar(255), data.username)
                 .input('password', sql.NVarChar(255), data.password)
+                .input('email', sql.NVarChar(255), data.email)
+                .input('first_name', sql.NVarChar(255), data.first_name)
+                .input('last_name', sql.NVarChar(255), data.last_name)
                 .query(query).then(recordset => {
                     pool.close();
                     resolve(recordset.recordset[0])
@@ -135,11 +138,59 @@ const existedUser = (username)  => {
         })
     })
 }
+
+const existedEmail = (email)  => {
+    let pool = new sql.ConnectionPool(config.sqlServer); // kết nối với csdl với các config đã làm ở file config
+    return new Promise((resolve, reject) => {
+        const query = "USE book_store;\
+        SELECT TOP 1 user_id FROM dbo.account WHERE email = @email;"
+        pool.connect().then(() => { // Tạo kết nối
+            const request = new sql.Request(pool); // Tạo request
+            request
+            .input('email', sql.NVarChar(255), email)
+            .query(query).then(res => { //Tiến hành query
+                pool.close(); //Đóng kết nối
+                resolve(res.recordset.length == 1)
+            }).catch(err => {
+                pool.close(); //Đóng kết nối
+                reject(err); //Trả về lỗi khi query thất bại
+            })
+        }).catch(err => {
+            reject(err); //Trả về lỗi khi kết nối với cơ sở dữ liệu thất bại
+        })
+    })
+}
+
+const verifyAccount = (user_id) => {
+    let pool = new sql.ConnectionPool(config.sqlServer);
+    return new Promise((resolve, reject) => {
+        const query = "USE book_store;\
+        UPDATE dbo.account SET status = 1 WHERE user_id = @user_id\
+        SELECT * FROM dbo.account WHERE user_id = @user_id";
+        pool.connect().then(() => {
+            const request = new sql.Request(pool);
+            request
+                .input('user_id', sql.Int, user_id)
+                .query(query).then(recordset => {
+                    pool.close();
+                    resolve(recordset.recordset[0])
+                }).catch(err => {
+                    pool.close();
+                    reject(err);
+                })
+        }).catch(err => {
+            reject(err);
+        })
+    })
+}
+
 module.exports = {
     getListAccount,
     updateAccount,
     searchAccount,
     createAccount,
     existedUser,
-    getByUsername
+    getByUsername,
+    existedEmail,
+    verifyAccount
 }

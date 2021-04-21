@@ -18,8 +18,12 @@ const sigup = async (req, res, next) => {
         let data = {};
         data.username = req.body.username;
         data.password = req.body.password;
-        if (!data.password || !data.username) {
-            res.status(400).json({ message: 'Thiếu tên tài khoản hoặc mật khẩu' });
+        data.email = req.body.email;
+        data.first_name = req.body.first_name;
+        data.last_name = req.body.last_name;
+        data.phonenuber = req.body.phonenuber || null;
+        if (!data.password || !data.username || !data.first_name || !data.last_name) {
+            res.status(400).json({ message: 'Thiếu thông tin tài khoản' });
             return;
         }
         if (data.password.length < 8) {

@@ -18,12 +18,17 @@ module.exports = {
             trustedConnection: true,
         }
     },
-    mysql:{
+    mysql: {
         user: config.MYSQL_USER,
         password: config.MYSQL_PASSWORD,
         database: config.MYSQL_DATABASE,
         host: config.MYSQL_HOST
     },
     token_secret: config.TOKEN_SECRET,
-    front_end_url: config.FRONTEND_URL
+    front_end_url: config.FRONTEND_URL,
+    mail: {
+        user: config.EMAIL,
+        pass: config.MAIL_PASSWORD
+    },
+    expried_time: config.VERIFY_EXPRIED_TIME
 }
