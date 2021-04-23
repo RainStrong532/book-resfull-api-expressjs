@@ -26,7 +26,7 @@ const getBookById = async (id) => {
     return new Promise((resolve, reject)=> {
         try {
             let con = sql.createConnection(config.mysql);
-            const query = "SELECT * FROM new_table WHERE book_id = ?;";
+            const query = "SELECT * FROM book WHERE book_id = ?;";
             con.connect(function (err) {
                 if (err) reject(err) ;
                 con.query(query,[id], function (err, results) {
