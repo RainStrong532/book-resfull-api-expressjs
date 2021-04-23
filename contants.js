@@ -14,8 +14,8 @@ const SQL_DATABASE = "book_store";
 const FRONTEND_URL = "http://localhost:3000";
 
 //email
-const EMAIL = "manhvvdev.app@gmail.com";
-const MAIL_PASSWORD = "@12345M678";
+const EMAIL = "Your email";
+const MAIL_PASSWORD = "Your password";
 
 //mysql config
 const MYSQL_USER = "root";
