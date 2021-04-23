@@ -4,86 +4,42 @@ const sql = require('mysql');
 
 //Mysql
 
-const getListBook = function () {
-    return new Promise(function(resolve, reject){
+const getListBook = async () => {
+    return new Promise((resolve, reject)=> {
         try {
-            let con = sql.createConnection(config.mysql);
-            const query = "SELECT * FROM book_store.book;";
-            con.beginTransaction(function (err) {
-                if (err) { reject(err) }
-                con.query(query, [], function (err, result) {
-                    if (err) {
-                        con.rollback(function (err) {
-                            con.end();
-                            reject(err)
-                        });
-                    }
-                    con.commit(function (err) {
-                        if (err) {
-                            con.rollback(function (err) {
-                                con.end();
-                                reject(err)
-                            });
-                        }
-                        con.end();
-                        resolve(result);
-                    });
-                });
+            let con = sql.createConnection(config.mysql);// tạo kết nối tới mysql với config của mysql đã tạo trước đó
+            const query = "SELECT * FROM book;";
+            con.connect(function (err) {
+                if (err) reject(err) ;
+                con.query(query,[], function (err, results) {// [] dùng để truyền biến vào query VD query = “... WHERE id = ?” thì dùng biến id truyền vào như sau [id]. Có code mẫu trong source code ở dưới cùng
+                    if (err) reject(err) ;
+                    resolve(results);
+                })
             });
         } catch (err) {
-            reject(err)
+            reject(err) ;
         }
     })
 }
 
-const getBookById = function (id) {
-    return new Promise(function(resolve, reject){
+const getBookById = async (id) => {
+    return new Promise((resolve, reject)=> {
         try {
             let con = sql.createConnection(config.mysql);
-            const query = "SELECT * FROM book_store.book WHERE book_id = ?;";
-            con.beginTransaction(function (err) {
-                if (err) { reject(err) }
-                con.query(query, [id ],function (err, result) {
-                    if (err) {
-                        con.rollback(function (err) {
-                            con.end();
-                            reject(err)
-                        });
-                    }
-                    con.commit(function (err) {
-                        if (err) {
-                            con.rollback(function (err) {
-                                con.end();
-                                reject(err)
-                            });
-                        }
-                        con.end();
-                        resolve(result);
-                    });
-                });
+            const query = "SELECT * FROM new_table WHERE book_id = ?;";
+            con.connect(function (err) {
+                if (err) reject(err) ;
+                con.query(query,[id], function (err, results) {
+                    if (err) reject(err) ;
+                    resolve(results);
+                })
             });
         } catch (err) {
-            reject(err)
+            reject(err) ;
         }
     })
 }
 
-// const getListBook = async () => {
-//     try {
-//         let con = sql.createConnection(config.mysql);
-//         const query = "USE book_store;\nSELECT * FROM dbo.book;";
-//         con.
-//         con.connect(function (err) {
-//             if (err) throw err;
-//             con.query(query, function (err, results) {
-//                 if (err) throw err;
-//                 return results;
-//             })
-//         });
-//     } catch (err) {
-//         return err;
-//     }
-// }
 
 module.exports = {
     getListBook,

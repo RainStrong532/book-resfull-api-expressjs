@@ -31,7 +31,7 @@ app.get('/', (req, res) => {
 app.use('/upload', uploadRouter.routes);
 
 app.use('/api/books' ,auth.authenticateToken, bookAuth.routes); // kiểm tra jsonwebtoken
-app.use('/api/public/books', bookRouter.routes); // http://localhost:4000/api/books url để tạo request
+app.use('/api/public/books', bookRouter.routes); // http://localhost:8031/api/books url để tạo request
 app.use('/api/mysql/books', bookRouterMysql.routes);
 app.use('/api/auth', authRouter.routes);
 app.use('/api/secrets', verifyRouter.routes);

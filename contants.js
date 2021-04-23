@@ -1,7 +1,7 @@
 //express serve config
-const PORT = 4000;
+const PORT = 8031;
 const HOST = "localhost";
-const HOST_URL = "http://localhost:4000";
+const HOST_URL = "http://localhost:8031";
 
 //sql server config
 const SQL_USER = "sa";
@@ -14,8 +14,8 @@ const SQL_DATABASE = "book_store";
 const FRONTEND_URL = "http://localhost:3000";
 
 //email
-const EMAIL = "your email";
-const MAIL_PASSWORD = "your password";
+const EMAIL = "manhvvdev.app@gmail.com";
+const MAIL_PASSWORD = "@12345M678";
 
 //mysql config
 const MYSQL_USER = "root";
