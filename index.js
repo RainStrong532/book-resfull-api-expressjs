@@ -16,7 +16,7 @@ const verifyRouter = require('./src/router/verifyRouter')
 const auth = require('./src/middleware/authenticated');
 
 
-app.use("/assets",express.static("assets")); // use static file
+app.use(express.static("assets")); // use static file
 app.set('view engine', 'pug');
 app.set('views', './src/view');
 
