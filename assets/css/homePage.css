@@ -1,0 +1,18 @@
+.loading{
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.loading > div {
+    width: 8rem;
+    height: 8rem;
+}
+#title{
+    text-align: center;
+}

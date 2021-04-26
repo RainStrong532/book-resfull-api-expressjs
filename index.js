@@ -3,6 +3,7 @@
 var express = require('express');
 const config = require('./config');
 const cors = require('cors');
+const path = require('path');
 
 var app = express();
 
@@ -16,7 +17,7 @@ const verifyRouter = require('./src/router/verifyRouter')
 const auth = require('./src/middleware/authenticated');
 
 
-app.use("/assets",express.static("assets")); // use static file
+app.use(express.static("assets")); // use static file
 app.set('view engine', 'pug');
 app.set('views', './src/view');
 
@@ -25,9 +26,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
-    res.render('welcome/index');
+    res.render('welcome/index', {user: "abc"});
 })
-
+app.get('/homepage', (req, res) => {
+    var options = {
+        root: path.join(__dirname)
+    };
+    var fileName = 'assets/pages/index.html';
+    res.sendFile(fileName, options, function (err) {
+        if (err) {
+            res.send("Error")
+        } else {
+        }
+    });
+})
 app.use('/upload', uploadRouter.routes);
 
 app.use('/api/books' ,auth.authenticateToken, bookAuth.routes); // kiểm tra jsonwebtoken
