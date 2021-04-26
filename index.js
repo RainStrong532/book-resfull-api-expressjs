@@ -26,7 +26,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
-    res.render('welcome/index', {user: "abc"});
+    res.render('welcome/index');
 })
 app.get('/homepage', (req, res) => {
     var options = {
