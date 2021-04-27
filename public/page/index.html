@@ -13,10 +13,13 @@
 </head>
 
 <body>
-    <div class="container mb-4">
+    <div class="container mb-4"  id="book_list">
         <h1 class="text-center">Danh sách sách</h1>
+        <div class="my-4 d-flex justify-content-center">
+            <button class="btn btn-success" v-on:click.stop.prevent="goToAddPage()">Thêm mới</button>
+        </div>
 
-        <div class="row justify-content-around" id="book_list">
+        <div class="row justify-content-around">
             <div v-for="(book, index) in listBook" class="card mt-3" style="width: 24rem;" v-bind:key="index">
                 <img src="https://picsum.photos/300/200" class="card-img-top" alt="Image">
                 <div class="card-body">
@@ -30,7 +33,9 @@
                     <p class="card-text">
                         Giá: <span>{{book.price}}</span> VNĐ
                     </p>
-                    <button href="#" class="btn btn-primary">Mua</button>
+                    <button class="btn btn-primary" disabled>Mua</button>
+                    <button class="btn btn-warning" v-on:click.stop.prevent="goToUpdatePage(book.book_id)">Cập nhật</button>
+                    <button class="btn btn-danger" v-on:click.stop.prevent="handleDeleteBook(book.book_id)">Xóa</button>
                 </div>
             </div>
         </div>
@@ -43,7 +48,7 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
     <script type="module">
 
-        import {callApi} from '/static/js/fetchApi.js';
+        import { callApi } from '/static/js/fetchApi.js';
         import URL from '/static/js/url.js';
 
         var book_list = new Vue({
@@ -52,13 +57,31 @@
                 listBook: []
             },
             methods: {
-                async getData(){
-                    try{
+                async getData() {
+                    try {
                         const res = await callApi('GET', URL.BOOK_URL);
                         this.listBook = res;
-                    }catch(err){
+                    } catch (err) {
                         alert(err);
                     }
+                },
+                async deleteData(id) {
+                    try {
+                        await callApi('DELETE', URL.BOOK_URL + "/" + id);
+                        alert("Xóa thành công");
+                        window.location.reload();
+                    } catch (err) {
+                        alert(err);
+                    }
+                },
+                goToAddPage() {
+                    window.location.href = "/books/add";
+                },
+                goToUpdatePage(id) {
+                    window.location.href = "/books/update/" + id;
+                },
+                handleDeleteBook(id) {
+                    this.deleteData(id);
                 }
             },
             created: function () {

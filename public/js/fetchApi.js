@@ -20,15 +20,10 @@ export const callApi = (method, url, data, token) => {
             request
         )
         .then(res =>{
-            console.log('================json====================');
-            console.log(res);
-            console.log('====================================');
             return res.json();
         })
         .then(res => {
-            console.log('====================================');
             console.log(res);
-            console.log('====================================');
             resolve(res);
         })
         .catch(err => {

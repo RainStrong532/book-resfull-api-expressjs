@@ -15,6 +15,20 @@ router.get("/", (req, res) => {
     })
 })
 
+router.get("/books/update/:id", (req, res) => {
+    const fileName = "/public/page/formBook.html";
+    res.sendFile(fileName, option, (err) => {
+        if(err) res.send(err);
+    })
+})
+
+router.get("/books/add", (req, res) => {
+    const fileName = "/public/page/formBook.html";
+    res.sendFile(fileName, option, (err) => {
+        if(err) res.send(err);
+    })
+})
+
 module.exports = {
     routes: router //Xuất router
 }
