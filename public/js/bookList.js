@@ -21,11 +21,7 @@ let book = {
 }
 
 let result = [];
-const update = (data) => {
-    console.log('====================================');
-    console.log(data);
-    console.log('====================================');
-}
+
 window.onload = async function () {
     try {
         result = await callApi('GET', url.BOOK_URL);
