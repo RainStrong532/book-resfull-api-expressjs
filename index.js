@@ -9,9 +9,7 @@ const bookRouter = require('./src/router/bookRouter');
 const bookRouterMysql = require('./src/router/bookRouterMysql');
 const pageRouter = require('./pageRouter');
 
-
-
-app.use(express.static("/public"));
+app.use("/static",express.static("public"));
 
 app.use(cors());
 app.use(express.json());

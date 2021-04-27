@@ -1,4 +1,4 @@
-function callApi(method, url, data, token) {
+export const callApi = (method, url, data, token) => {
     const request = {
         method: method
     };
@@ -19,14 +19,21 @@ function callApi(method, url, data, token) {
             url,
             request
         )
-        .then(res => res.json())
+        .then(res =>{
+            console.log('================json====================');
+            console.log(res);
+            console.log('====================================');
+            return res.json();
+        })
         .then(res => {
+            console.log('====================================');
+            console.log(res);
+            console.log('====================================');
             resolve(res);
         })
         .catch(err => {
+            console.log(err);
             reject(err);
         })
     })
 }
-
-module.exports = callApi;
