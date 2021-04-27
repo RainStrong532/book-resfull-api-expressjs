@@ -1,7 +1,7 @@
 //express serve config
 const PORT = 8031;
 const HOST = "localhost";
-const HOST_URL = "http://localhost:8031";
+const HOST_URL = "http://localhost:"+PORT;
 
 //sql server config
 const SQL_USER = "sa";
